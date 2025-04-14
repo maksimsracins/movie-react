@@ -72,6 +72,9 @@
   .favorite_btn.active {
     color: #ff4757;
   }
+  .watched_btn.active::after{
+    content:' √'
+  }
   
   .rating_select {
     background-color: rgba(0, 0, 0, 0.7);

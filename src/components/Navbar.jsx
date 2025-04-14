@@ -10,6 +10,7 @@ function Navbar(){
             <div className="navbar_links">
                 <Link to="/" className="nav_link">Home</Link>
                 <Link to="/favorites" className="nav_link">Favorites</Link>
+                <Link to="/watched" className="nav_link">Watched</Link>
             </div>
             </nav>
     )
