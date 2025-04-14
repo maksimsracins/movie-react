@@ -1,6 +1,7 @@
 import MovieCard from '../components/MovieCard.jsx';
+import Genre from '../components/Genre.jsx';
 import React, {useState, useEffect} from 'react';
-import {searchMovies, getPopularMovies} from "../services/api.js";
+import {searchMovies, getPopularMovies, getGenres} from "../services/api.js";
 import "../css/Home.css"
 
 function Home(){
@@ -8,12 +9,31 @@ function Home(){
     const [movies, setMovies] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [genres, setGenres] = useState([]);
+
+    useEffect(() => {
+
+        const loadGenres = async () => {
+            try{
+                const genres = await getGenres();
+                setGenres(genres);
+                console.log(g)
+            }catch(err){
+                console.log(err)
+                setError("Failed to load genres...")
+            }finally{
+                setLoading(false);
+            }
+        }
+        loadGenres();
+    },[]);
 
     useEffect(() => {
         const loadPopularMovies = async () => {
             try{
                 const popularMovies = await getPopularMovies();
                 setMovies(popularMovies);
+                console.log(popularMovies);
             }catch(err){
                 console.log(err);
                 setError("Failed to load movies...")
@@ -23,13 +43,6 @@ function Home(){
         }
         loadPopularMovies();
     },[]);
-
-    // const movies = [
-    //     {id: 1, title: "John Wick", release_date: "2020", url: "123"},
-    //     {id: 2, title: "Terminator", release_date: "1999", url: "123"},
-    //     {id: 3, title: "The Matrix", release_date: "2003", url: "123"},
-    //     {id: 4, title: "Fight Club", release_date: "2005", url: "123"},
-    // ];
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -53,14 +66,21 @@ function Home(){
 
     return (
         <div className="home">
-            <form onSubmit={handleSearch} className="search_form">
-                <input type="text" 
-                placeholder='Search for movies...' 
-                className="search_input" 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}/>
-                <button type='submit' className="seach_button">Search</button>
-            </form>
+            <div className="actions">
+                <ul className="actions_ul">
+                    {genres.map(
+                        (g) => <Genre genre={g} key={g.id}/>
+                    )}
+                </ul>
+                <form onSubmit={handleSearch} className="search_form">
+                    <input type="text" 
+                    placeholder='Search for movies...' 
+                    className="search_input" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}/>
+                    <button type='submit' className="seach_button">Search</button>
+                </form>
+                </div>
 
             {loading ? <div className="loading">Loading... </div> : <div className="movies_grid">
                 {movies.map(
