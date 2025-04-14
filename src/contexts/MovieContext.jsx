@@ -7,8 +7,8 @@
 
  export const MovieProvider = ({children}) => {
 
-    const [favorites, setFavorites] = useLocalStorage('favorites', null);
-    const [watchedMovies, setWatchedMovies] = useLocalStorage('watched', null);
+    const [favorites, setFavorites] = useLocalStorage('favorites', []);
+    const [watchedMovies, setWatchedMovies] = useLocalStorage('watched', []);
 
     // useEffect(() => {
     //     const storedFavs = localStorage.getItem('favorites');
