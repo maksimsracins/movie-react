@@ -7,6 +7,12 @@ export const getPopularMovies = async () => {
     return data.results
 };
 
+export const getGenres = async () => {
+  const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`);
+  const data = await response.json();
+  return data.genres
+};
+
 export const searchMovies = async (query) => {
     const response = await fetch(
       `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
