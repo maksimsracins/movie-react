@@ -3,6 +3,10 @@
     width: 100%;
     box-sizing: border-box;
   }
+  .actions{
+    display: flex;
+    flex-direction: row;
+  }
   
   .search_form {
     max-width: 600px;
@@ -41,7 +45,10 @@
   .search_button:hover {
     background-color: #f40612;
   }
-  
+  .genre_list{
+    list-style-type: none;
+    float: left;
+}
   
   @media (max-width: 639px) {
     .home {
