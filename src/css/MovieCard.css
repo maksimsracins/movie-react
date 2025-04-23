@@ -9,10 +9,6 @@
     flex-direction: column;
   }
   
-  .movie_card:hover {
-    transform: translateY(-5px);
-  }
-  
   .movie_poster {
     position: relative;
     aspect-ratio: 2/3;

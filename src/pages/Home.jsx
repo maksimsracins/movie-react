@@ -1,12 +1,13 @@
 import MovieCard from '../components/MovieCard.jsx';
-import Genre from '../components/Genre.jsx';
 import React, {useState, useEffect} from 'react';
 import {searchMovies, getPopularMovies, getGenres} from "../services/api.js";
 import "../css/Home.css"
-
+//TODO: when search is used, movies array is overriden
+//TODO: check default amount of loaded movies. Why so less?!
 function Home(){
     const [searchQuery, setSearchQuery] = useState("");
     const [movies, setMovies] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [genres, setGenres] = useState([]);
@@ -17,9 +18,8 @@ function Home(){
             try{
                 const genres = await getGenres();
                 setGenres(genres);
-                console.log(g)
+                console.log(genres)
             }catch(err){
-                console.log(err)
                 setError("Failed to load genres...")
             }finally{
                 setLoading(false);
@@ -44,6 +44,14 @@ function Home(){
         loadPopularMovies();
     },[]);
 
+    const handleFilteredMovies = (id) => { 
+        console.log("ID:" + id);
+        setFilteredMovies(
+            movies.filter(movie => movie.genre_ids.includes(id))
+        );
+        console.log(filteredMovies)
+    }
+
     const handleSearch = async (e) => {
         e.preventDefault();
         if (!searchQuery.trim()) return
@@ -64,12 +72,14 @@ function Home(){
 
     }
 
-    return (
+    return ( 
         <div className="home">
             <div className="actions">
                 <ul className="actions_ul">
                     {genres.map(
-                        (g) => <Genre genre={g} key={g.id}/>
+                        (gen) => <li className="genre_list" key={gen.id} onClick={() => {
+                            handleFilteredMovies(gen.id)
+                        }}> <button>{gen.name}</button></li>
                     )}
                 </ul>
                 <form onSubmit={handleSearch} className="search_form">
@@ -83,11 +93,10 @@ function Home(){
                 </div>
 
             {loading ? <div className="loading">Loading... </div> : <div className="movies_grid">
-                {movies.map(
-                    (m) => 
-                    /*m.title.toLowerCase().startsWith(searchQuery) && ()∂ */
-                    <MovieCard movie={m} key={m.id} />
-                )
+                {
+                filteredMovies.length === 0 ? 
+                movies.map((m) => <MovieCard movie={m} key={m.id} />) 
+                    : filteredMovies.map((m) => <MovieCard movie={m} key={m.id} />)
                 }
             </div>
             }
