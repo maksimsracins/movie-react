@@ -1,7 +1,7 @@
 import "../css/MovieCard.css"
 import { useMovieContext } from "../contexts/MovieContext"
 
-function MovieCard({movie}){
+function MovieCard({movie, onClick}){
 
     const {
         favorites, 
@@ -29,7 +29,7 @@ function MovieCard({movie}){
     }
 
     return (
-        <div className="movie_card">
+        <div className="movie_card" onClick={onClick}>
             <div className="movie_poster">
                 <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
                 <div className="movie_overlay">

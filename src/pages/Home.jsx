@@ -1,5 +1,6 @@
 import MovieCard from '../components/MovieCard.jsx';
 import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {searchMovies, getPopularMovies, getGenres} from "../services/api.js";
 import "../css/Home.css"
 //TODO: when search is used, movies array is overriden
@@ -12,7 +13,9 @@ function Home(){
     const [loading, setLoading] = useState(true);
     const [genres, setGenres] = useState([]);
 
-    useEffect(() => {
+    const navigate = useNavigate();
+
+    useEffect(() => {                                     
 
         const loadGenres = async () => {
             try{
@@ -95,8 +98,8 @@ function Home(){
             {loading ? <div className="loading">Loading... </div> : <div className="movies_grid">
                 {
                 filteredMovies.length === 0 ? 
-                movies.map((m) => <MovieCard movie={m} key={m.id} />) 
-                    : filteredMovies.map((m) => <MovieCard movie={m} key={m.id} />)
+                movies.map((m) => <MovieCard movie={m} key={m.id} onClick={() => navigate(`/moviepage/${m.id}`)}/>) 
+                    : filteredMovies.map((m) => <MovieCard movie={m} key={m.id} onClick={() => navigate(`/moviepage/${m.id}`)}/>)
                 }
             </div>
             }
